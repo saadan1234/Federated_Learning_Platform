@@ -66,5 +66,5 @@ def client_fn(context: Context)-> Client:
     client_train = train_sets[int(partition_id)]
     # Contains the overall test set to evaluate the client node.
     client_test = testset
-    # Returns the flower client with its corresponding train and test set.
+    # Returns the flower client with its corresponding configuration
     return FlowerClient(net, client_train, client_test).to_client

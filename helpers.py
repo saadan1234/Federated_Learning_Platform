@@ -8,6 +8,8 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 
+backend_setup = {"init_args": {"logging_level": logging.ERROR, "log_to_driver": False}}
+
 class InfoFilter(logging.Filter):
     def filter(self, record):
         return record.levelno == logging.INFO
