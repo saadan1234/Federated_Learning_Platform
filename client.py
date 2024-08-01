@@ -25,7 +25,7 @@ def get_weights(net):
     # Moves tensors to memory and then converts it into Numpy array
     ndarray = [
         # Keys are ignored and only values are used.
-        val.cpu.numpy() for _, val in net.state_dict().items()  
+        val.cpu().numpy() for _, val in net.state_dict().items()  
     ]
     # returns the array with the model weights
     return ndarray
@@ -56,12 +56,15 @@ class FlowerClient(NumPyClient):
         loss, accuracy = evaluate_model(self.net, self.testset)
         return loss, len(self.testset), {"accuracy": accuracy}
 
-
+# Client Function that creats individual client instances.
 def client_fn(context: Context)-> Client:
+    # The "Context" contains the client id, config settings, state and run file.
     net = SimpleModel()
+    # The following id gets the partition corresponding to client 
     partition_id = int(context.node_config["partition-id"])
+    # The data assigned to the client is based on its partition id
     client_train = train_sets[int(partition_id)]
+    # Contains the overall test set to evaluate the client node.
     client_test = testset
+    # Returns the flower client with its corresponding train and test set.
     return FlowerClient(net, client_train, client_test).to_client
-
-client = ClientApp(client_fn)

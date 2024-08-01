@@ -8,11 +8,15 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 
-backend_setup = {"init_args": {"logging_level": logging.ERROR, "log_to_driver": False}}
-
 class InfoFilter(logging.Filter):
     def filter(self, record):
         return record.levelno == logging.INFO
+
+def fit_config(server_round: int):
+    config_dict = {
+        "local_epochs": 2 if server_round < 3 else 5,
+    }
+    return config_dict
 
 class SimpleModel(nn.Module):
     def __init__(self):
