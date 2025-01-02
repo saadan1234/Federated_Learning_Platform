@@ -43,9 +43,9 @@ def server_fn(context: Context):
     # FedAvg to simple take average of the all the client weights
     strategy = FedAvg(
         # Train the local model on 100% local data available to the client. (1 = 100%)
-        fraction_fit=1.0,
+        fraction_fit=0.5,
         # Evaluate the local model on 0% of the local data available to the cleint. (0 = 0%)
-        fraction_evaluate=0.0,
+        fraction_evaluate=0.2,
         # Intitialize the server model with the given below weights (or hyperparameters)
         initial_parameters=params,
         # Evaluate the global model based on the evaluate function
@@ -54,7 +54,7 @@ def server_fn(context: Context):
         on_fit_config_fn=fit_config,
     )
     # Server training details.
-    config=ServerConfig(num_rounds=3)
+    config=ServerConfig(num_rounds=1)
     return ServerAppComponents(
         strategy=strategy,
         config=config,
