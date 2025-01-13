@@ -1,13 +1,19 @@
-from datasets import load_dataset
+# Run below command for dataset generation and federated functionality
+# ! pip install -q "flwr-datasets[vision]"
 
-# Function to load and display details of a dataset
-def load_data(dataset_name):
-    # Load the dataset
-    dataset = load_dataset(dataset_name)
-    
-    print(f"Type of Dataset: {type(dataset['train'][1])}")
-    print(f"Length of Dataset: {len(dataset)}")
-    return dataset
+from flwr_datasets import FederatedDataset
+from flwr_datasets.partitioner import IidPartitioner
 
-# Example Usage
-dataset = load_data('uoft-cs/cifar10')
+# Set the partitioner to create 10 partitions of the dataset
+partitioner = IidPartitioner(num_partitions=10)
+
+# Enter the name of any HuggingFace Dataset, Test set is not partitioned for evaluation across network
+fds = FederatedDataset(
+    dataset="uoft-cs/cifar10", partitioners={"train": partitioner}
+)
+
+# Load the first partition of the "train" split
+partition = fds.load_partition(0, "train")
+
+# You can access the whole "test" split of the base dataset (it hasn't been partitioned)
+centralized_dataset = fds.load_split("test")

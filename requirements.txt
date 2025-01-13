@@ -1,0 +1,2 @@
+# Run below command for dataset generation and federated functionality
+# ! pip install -q "flwr-datasets[vision]"
