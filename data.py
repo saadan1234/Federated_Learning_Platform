@@ -41,12 +41,14 @@ def get_partition_params():
     """Prompt user for dataset partitioning parameters."""
     dataset_name = input("Enter dataset name: ").strip()
     num_partitions = int(input("Enter the number of partitions (positive integer): "))
-    choice = input("Partition by 'label' or 'skewness': ").strip().lower()
+    choice = input("Partition by 'label' or 'skewness' or 'none' : ").strip().lower()
     params = {"dataset_name": dataset_name, "num_partitions": num_partitions, "num_classes_per_partition":None, "alpha":None}
     if choice == "label":
         params["num_classes_per_partition"] = int(input("Enter number of classes per partition (positive integer): "))
     elif choice == "skewness":
         params["alpha"] = float(input("Enter alpha value (positive float): "))
+    elif choice == "none":
+        pass
     else:
         raise ValueError("Invalid choice! Must be 'label' or 'skewness'.")
     return params
